@@ -139,16 +139,6 @@ namespace picpixel {
     }
 
     /**
-     * change red and green.
-     * @param rgb eg: 0x00ffc0
-     */
-    //% blockId="change_red_and_green" block="change red and green in %rgb" blockGap=8
-    //% weight=58
-    export function changeRandG(rgb: number): number {
-        return packRGB(unpackG(rgb), unpackR(rgb), unpackB(rgb));
-    }
-
-    /**
      * Gets the RGB value of a known color
     */
     //% weight=2 blockGap=8
