@@ -28,7 +28,8 @@ enum RGBColors {
  */
 //% weight=5 color=#2699BF icon="\uf110"
 namespace picpixel {
-    let neobuf = pins.createBuffer(25 * 3 + 1);
+    const neocount=25;
+    let neobuf = pins.createBuffer(neocount * 3 + 1);
     let Brightness = 0;
     let I2Caddress=0x51;
 
@@ -54,6 +55,8 @@ namespace picpixel {
     //% blockGap=8
     //% weight=80
     export function setPixelColor(pixeloffset: number, rgb: number): void {
+        if(pixeloffset>=neocount) return;
+
         let red = unpackR(rgb);
         let green = unpackG(rgb);
         let blue = unpackB(rgb);
@@ -96,7 +99,7 @@ namespace picpixel {
     //% blockId="clear" block="clear"
     //% weight=76
     export function clear(): void {
-        for (let i = 0; i < 25 * 3; i++) neobuf[i] = 0x00;
+        for (let i = 1; i <= neocount * 3; i++) neobuf[i] = 0x00;
         show();
     }
 
@@ -114,7 +117,7 @@ namespace picpixel {
         let red = unpackR(rgb);
         let green = unpackG(rgb);
         let blue = unpackB(rgb);
-        for (let i = 1; i <= 25 * 3; i += 3) {
+        for (let i = 1; i <= neocount * 3; i += 3) {
             if (Brightness == 0) {
                 neobuf[i + 0] = green;
                 neobuf[i + 1] = red;
