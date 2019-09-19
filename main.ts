@@ -71,7 +71,7 @@ namespace picpixel {
             neobuf[off + 2] = (blue * Brightness) >> 8;
         }
 
-        buf[0] = pixeloffset >> 0;
+        buf[0] = (pixeloffset >> 0) * 3;
         buf[1] = neobuf[off + 0];
         buf[2] = neobuf[off + 1];
         buf[3] = neobuf[off + 2];
