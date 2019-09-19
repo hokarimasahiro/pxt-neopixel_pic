@@ -36,7 +36,7 @@ namespace picpixel {
      * Shows all LEDs to a given color (range 0-255 for r, g, b). 
      * @param rgb RGB color of the LED
      */
-    //% blockId="neopixel_set_strip_color" block="%strip|show color %rgb=neopixel_colors" 
+    //% blockId="set_strip_color" block="show color %rgb=neopixel_colors" 
     //% weight=85 blockGap=8
     export function showColor(rgb: number) {
         rgb = rgb >> 0;
@@ -50,7 +50,7 @@ namespace picpixel {
      * @param pixeloffset position of the NeoPixel in the strip
      * @param rgb RGB color of the LED
      */
-    //% blockId="neopixel_set_pixel_color" block="%strip|set pixel color at %pixeloffset|to %rgb=neopixel_colors" 
+    //% blockId="set_pixel_color" block="set pixel color at %pixeloffset|to %rgb=neopixel_colors" 
     //% blockGap=8
     //% weight=80
     export function setPixelColor(pixeloffset: number, rgb: number): void {
@@ -82,9 +82,9 @@ namespace picpixel {
     /**
      * Send all the changes to the strip.
      */
-    //% blockId="neopixel_show" block="%strip|show" blockGap=8
+    //% blockId="show" block="show" blockGap=8
     //% weight=79
-    export function show() {
+    function show() {
         pins.i2cWriteBuffer(I2Caddress,neobuf)
     }
 
@@ -92,7 +92,7 @@ namespace picpixel {
      * Turn off all LEDs.
      * You need to call ``show`` to make the changes visible.
      */
-    //% blockId="neopixel_clear" block="%strip|clear"
+    //% blockId="clear" block="clear"
     //% weight=76
     export function clear(): void {
         for (let i = 0; i < 25 * 3; i++) neobuf[i] = 0x00;
@@ -103,14 +103,13 @@ namespace picpixel {
      * Set the brightness of the strip. This flag only applies to future operation.
      * @param brightness a measure of LED brightness in 0-255. eg: 255
      */
-    //% blockId="neopixel_set_brightness" block="%strip|set brightness %brightness" blockGap=8
+    //% blockId="set_brightness" block="set brightness %brightness" blockGap=8
     //% weight=59
     export function setBrightness(brightness: number): void {
         Brightness=brightness;
     }
 
-
-    export function setAllRGB(rgb: number) {
+    function setAllRGB(rgb: number) {
         let red = unpackR(rgb);
         let green = unpackG(rgb);
         let blue = unpackB(rgb);
@@ -142,7 +141,7 @@ namespace picpixel {
      * change red and green.
      * @param rgb eg: 0x00ffc0
      */
-    //% blockId="neopixel_change_red_and_green" block="%strip|change red and green in %rgb" blockGap=8
+    //% blockId="change_red_and_green" block="change red and green in %rgb" blockGap=8
     //% weight=58
     export function changeRandG(rgb: number): number {
         return packRGB(unpackG(rgb), unpackR(rgb), unpackB(rgb));
