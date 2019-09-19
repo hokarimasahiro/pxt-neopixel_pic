@@ -28,7 +28,7 @@ enum RGBColors {
  */
 //% weight=5 color=#2699BF icon="\uf110"
 namespace picpixel {
-    let neobuf = pins.createBuffer(25 * 3);
+    let neobuf = pins.createBuffer(25 * 3 + 1);
     let Brightness = 0;
     let I2Caddress=0x51;
 
@@ -59,22 +59,22 @@ namespace picpixel {
         let blue = unpackB(rgb);
         let buf=pins.createBuffer(4);
 
-        let i = (pixeloffset >> 0) * 3;
+        let off = (pixeloffset >> 0) * 3 + 1;
 
         if (Brightness == 0) {
-            neobuf[i + 0] = green;
-            neobuf[i + 1] = red;
-            neobuf[i + 2] = blue;
+            neobuf[off + 0] = green;
+            neobuf[off + 1] = red;
+            neobuf[off + 2] = blue;
         } else {
-            neobuf[i + 0] = (green * Brightness) >> 8;
-            neobuf[i + 1] = (red * Brightness) >> 8;
-            neobuf[i + 2] = (blue * Brightness) >> 8;
+            neobuf[off + 0] = (green * Brightness) >> 8;
+            neobuf[off + 1] = (red * Brightness) >> 8;
+            neobuf[off + 2] = (blue * Brightness) >> 8;
         }
 
         buf[0] = pixeloffset >> 0;
-        buf[1] = neobuf[i + 0];
-        buf[2] = neobuf[i + 1];
-        buf[3] = neobuf[i + 2];
+        buf[1] = neobuf[off + 0];
+        buf[2] = neobuf[off + 1];
+        buf[3] = neobuf[off + 2];
 
         pins.i2cWriteBuffer(I2Caddress,buf);
     }
@@ -85,6 +85,7 @@ namespace picpixel {
     //% blockId="show" block="show" blockGap=8
     //% weight=79
     function show() {
+        neobuf[0]=0x00;
         pins.i2cWriteBuffer(I2Caddress,neobuf)
     }
 
@@ -113,7 +114,7 @@ namespace picpixel {
         let red = unpackR(rgb);
         let green = unpackG(rgb);
         let blue = unpackB(rgb);
-        for (let i = 0; i < 25 * 3; i += 3) {
+        for (let i = 1; i <= 25 * 3; i += 3) {
             if (Brightness == 0) {
                 neobuf[i + 0] = green;
                 neobuf[i + 1] = red;
