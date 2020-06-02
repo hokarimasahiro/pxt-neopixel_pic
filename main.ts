@@ -80,6 +80,7 @@ namespace picpixel {
         buf[3] = neobuf[off + 2];
 
         pins.i2cWriteBuffer(I2Caddress, buf);
+        pins.i2cWriteNumber(I2Caddress, 0xff, NumberFormat.Int8BE);
     }
 
     /**
