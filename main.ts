@@ -28,10 +28,10 @@ enum RGBColors {
  */
 //% weight=5 color=#2699BF icon="\uf110"
 namespace picpixel {
-    const neocount=25;
+    const neocount = 25;
     let neobuf = pins.createBuffer(neocount * 3 + 1);
     let Brightness = 0;
-    let I2Caddress=0x51;
+    let I2Caddress = 0x51;
 
     /**
      * Shows all LEDs to a given color (range 0-255 for r, g, b). 
@@ -55,12 +55,12 @@ namespace picpixel {
     //% blockGap=8
     //% weight=80
     export function setPixelColor(pixeloffset: number, rgb: number): void {
-        if(pixeloffset>=neocount) return;
+        if (pixeloffset >= neocount) return;
 
         let red = unpackR(rgb);
         let green = unpackG(rgb);
         let blue = unpackB(rgb);
-        let buf=pins.createBuffer(4);
+        let buf = pins.createBuffer(4);
 
         let off = (pixeloffset >> 0) * 3 + 1;
 
@@ -74,12 +74,12 @@ namespace picpixel {
             neobuf[off + 2] = (blue * Brightness) >> 8;
         }
 
-        buf[0] = (pixeloffset >> 0) * 3;
+        buf[0] = (pixeloffset >> 0) * 3 | 0x80;
         buf[1] = neobuf[off + 0];
         buf[2] = neobuf[off + 1];
         buf[3] = neobuf[off + 2];
 
-        pins.i2cWriteBuffer(I2Caddress,buf);
+        pins.i2cWriteBuffer(I2Caddress, buf);
     }
 
     /**
@@ -87,9 +87,10 @@ namespace picpixel {
      */
     //% blockId="show" block="show" blockGap=8
     //% weight=79
-    function show() {
-        neobuf[0]=0x00;
-        pins.i2cWriteBuffer(I2Caddress,neobuf)
+    export function show() {
+        neobuf[0] = 0x80;
+        pins.i2cWriteBuffer(I2Caddress, neobuf)
+        pins.i2cWriteNumber(I2Caddress, 0xff, NumberFormat.Int8BE);
     }
 
     /**
@@ -110,7 +111,7 @@ namespace picpixel {
     //% blockId="set_brightness" block="set brightness %brightness" blockGap=8
     //% weight=59
     export function setBrightness(brightness: number): void {
-        Brightness=brightness;
+        Brightness = brightness;
     }
 
     function setAllRGB(rgb: number) {
